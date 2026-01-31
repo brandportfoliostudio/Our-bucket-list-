@@ -1,10 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Our Bucket List</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Patrick+Hand&display=swap" rel="stylesheet">
 
 <style>
@@ -26,7 +26,7 @@ h1{font-family:Anton;font-size:clamp(2.5rem,6vw,4.5rem);}
 .bucket-label{position:absolute;bottom:110px;width:100%;text-align:center;font-family:Anton;color:white;letter-spacing:.1em;font-size:1.4rem;user-select:none;}
 .paper{position:fixed;width:160px;height:90px;background:#fffdf9;padding:10px;font-family:'Patrick Hand';font-size:14px;border-radius:6px;box-shadow:0 18px 40px rgba(0,0,0,.25);animation:fly 1.8s var(--ease) forwards;z-index:9;white-space:normal;}
 @keyframes fly{to{transform:translate(calc(-260px + 520px * var(--x)), calc(-520px - 260px * var(--y))) rotate(calc(-60deg + 120deg * var(--r)));opacity:0;}}
-main{display:none;padding:20px 5vw 120px;}
+main{display:block;padding:20px 5vw 120px;}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;}
 .card{background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-radius:22px;padding:18px;box-shadow:0 28px 60px rgba(0,0,0,.12);animation:cardIn .7s var(--ease) both;}
 @keyframes cardIn{from{opacity:0;transform:translateY(40px);}}
@@ -154,8 +154,8 @@ localStorage.setItem("dreams", JSON.stringify(items));
 }
 
 // ADD DREAM
-function openAdd(){document.getElementById("addModal").style.display="flex"}
-function closeAdd(){document.getElementById("addModal").style.display="none"}
+function openAdd(){document.getElementById("addModal").style.display="flex";}
+function closeAdd(){document.getElementById("addModal").style.display="none";}
 function addDream(){
 const v=document.getElementById("newDream").value.trim();
 if(!v) return;
@@ -185,13 +185,14 @@ const bucket=document.getElementById("bucket");
 bucket.onclick=()=>{
 burstPapers();
 document.querySelector(".bucket-stage").remove();
-document.getElementById("content").style.display="block";
-render();
 };
 
 // MAP PLACEHOLDER
 function openMap(i){document.getElementById("mapModal").style.display="flex";}
 function closeMap(){document.getElementById("mapModal").style.display="none";}
+
+// Render immediately
+render();
 </script>
 
 </body>
