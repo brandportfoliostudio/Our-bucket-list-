@@ -1,207 +1,635 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Our Bucket List</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Love Bucket List 💕</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<style>
-:root{
-  --bg:#f6f5f3;
-  --ink:#111;
-  --accent:#d6a6b3;
-  --ease:cubic-bezier(.22,1,.36,1);
-}
-*{box-sizing:border-box;}
-body{margin:0;font-family:Inter,sans-serif;background:var(--bg);overflow-x:hidden;}
-header{text-align:center;padding:60px 5vw 20px;}
-h1{font-family:Anton;font-size:clamp(2.5rem,6vw,4.5rem);}
-.search{margin-top:20px;padding:12px 16px;border-radius:40px;border:none;width:100%;max-width:420px;box-shadow:0 6px 20px rgba(0,0,0,0.1);}
-.bucket-stage{position:fixed;inset:0;display:flex;justify-content:center;align-items:flex-end;z-index:10;pointer-events:none;}
-.bucket{width:420px;height:340px;background:linear-gradient(#ddb4bd,#c58a9f);border-radius:0 0 70px 70px;transform:translateY(100%);animation:rise 1.5s var(--ease) forwards;cursor:pointer;box-shadow:0 40px 120px rgba(0,0,0,.25);position:relative;pointer-events:auto;}
-@keyframes rise{to{transform:translateY(48%) scale(1.1);}}
-.bucket::before{content:"";position:absolute;top:-56px;left:-36px;right:-36px;height:110px;border:12px solid #c58a9f;border-bottom:none;border-radius:120px 120px 0 0;}
-.bucket-label{position:absolute;bottom:110px;width:100%;text-align:center;font-family:Anton;color:white;letter-spacing:.1em;font-size:1.4rem;user-select:none;}
-.paper{position:fixed;width:160px;height:90px;background:#fffdf9;padding:10px;font-family:'Patrick Hand';font-size:14px;border-radius:6px;box-shadow:0 18px 40px rgba(0,0,0,.25);animation:fly 1.8s var(--ease) forwards;z-index:9;white-space:normal;}
-@keyframes fly{to{transform:translate(calc(-260px + 520px * var(--x)), calc(-520px - 260px * var(--y))) rotate(calc(-60deg + 120deg * var(--r)));opacity:0;}}
-main{display:block;padding:20px 5vw 120px;}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;}
-.card{background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-radius:22px;padding:18px;box-shadow:0 28px 60px rgba(0,0,0,.12);animation:cardIn .7s var(--ease) both;position:relative;}
-@keyframes cardIn{from{opacity:0;transform:translateY(40px);}}
-.card textarea{width:100%;border:none;resize:none;font-size:1rem;font-family:'Patrick Hand';background:none;}
-.card button{margin-top:10px;border:none;background:var(--ink);color:white;padding:8px 14px;border-radius:20px;cursor:pointer;}
-.card .delete{position:absolute;top:10px;right:10px;background:red;padding:4px 8px;font-size:12px;border-radius:10px;}
-.fab{position:fixed;right:24px;bottom:24px;width:64px;height:64px;border-radius:50%;background:var(--ink);color:white;font-size:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 24px 60px rgba(0,0,0,.25);transition:transform .3s var(--ease);}
-.fab:hover{transform:scale(1.1);}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:20;}
-.modal-box{width:min(90vw,640px);background:white;border-radius:26px;padding:16px;animation:modalIn .5s var(--ease);}
-@keyframes modalIn{from{opacity:0;transform:scale(.9);}}
-.modal-header{display:flex;gap:10px;margin-bottom:10px;}
-.modal-header input{flex:1;padding:10px 14px;border-radius:20px;border:1px solid #ddd;}
-.close{width:38px;height:38px;border-radius:50%;border:none;cursor:pointer;}
-#map-placeholder{margin-top:12px;height:200px;border-radius:18px;width:100%;background:#eee;display:flex;align-items:center;justify-content:center;color:#888;font-family:'Patrick Hand';font-size:18px;}
-.add-modal{display:none;}
-.add-box{width:min(90vw,420px);background:white;border-radius:26px;padding:22px;}
-.add-box textarea{width:100%;height:100px;border-radius:14px;padding:14px;border:1px solid #ddd;resize:none;font-family:'Patrick Hand';}
-.add-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:14px;}
-.add-actions button{border:none;padding:10px 18px;border-radius:20px;cursor:pointer;}
-.add-actions .add{background:var(--ink);color:white;}
-</style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .bucket-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .bucket-container:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+
+        .bucket {
+            width: 300px;
+            height: 350px;
+            background: linear-gradient(145deg, #fff 0%, #f8f8f8 100%);
+            border-radius: 20px 20px 100px 100px;
+            position: relative;
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.1),
+                inset 0 -20px 30px rgba(255,255,255,0.8),
+                inset 0 10px 20px rgba(0,0,0,0.05);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .bucket::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: linear-gradient(145deg, #d4a373 0%, #b5895b 100%);
+            border-radius: 20px 20px 0 0;
+            box-shadow: inset 0 -5px 10px rgba(0,0,0,0.2);
+        }
+
+        .bucket::after {
+            content: '';
+            position: absolute;
+            top: 25px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: #e0c8a0;
+            border-radius: 50%;
+            box-shadow: inset 0 5px 10px rgba(0,0,0,0.1);
+        }
+
+        .bucket-text {
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Dancing Script', cursive;
+            font-size: 28px;
+            font-weight: 700;
+            color: #8b4513;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
+            text-align: center;
+            padding: 0 20px;
+            border: 3px dashed #d4a373;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            line-height: 1.2;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .list-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.8);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .list-container.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .header h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 36px;
+            margin: 0;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255,255,255,0.4);
+            transform: rotate(90deg);
+        }
+
+        .dreams-list {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            padding-bottom: 100px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .dream-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform: translateY(100px) scale(0.8);
+            opacity: 0;
+            animation: explodeIn 0.8s ease forwards;
+            position: relative;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .dream-card:nth-child(1) { animation-delay: 0.1s; }
+        .dream-card:nth-child(2) { animation-delay: 0.15s; }
+        .dream-card:nth-child(3) { animation-delay: 0.2s; }
+        .dream-card:nth-child(4) { animation-delay: 0.25s; }
+        .dream-card:nth-child(5) { animation-delay: 0.3s; }
+        /* Continue for more */
+
+        .dream-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        @keyframes explodeIn {
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .dream-text {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            font-weight: 400;
+        }
+
+        .dream-location {
+            color: #ff6b9d;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .dream-location i {
+            margin-right: 8px;
+        }
+
+        .dream-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-edit {
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+            color: white;
+        }
+
+        .btn-edit:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-delete {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #ff5252;
+        }
+
+        #addDreamBtn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff6b9d, #c44569);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            box-shadow: 0 10px 30px rgba(255,107,157,0.4);
+            cursor: pointer;
+            z-index: 1001;
+            animation: pulse 2s infinite;
+            display: none;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        #addDreamBtn.active {
+            display: block;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 28px;
+            color: #c44569;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ff9a9e;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #c44569;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b9d, #c44569);
+            color: white;
+            padding: 12px 24px;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #666;
+            padding: 12px 24px;
+        }
+
+        .btn-primary:hover, .btn-secondary:hover {
+            transform: translateY(-2px);
+        }
+
+        .heart-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 500;
+        }
+
+        @media (max-width: 768px) {
+            .dreams-list {
+                grid-template-columns: 1fr;
+                padding: 10px;
+            }
+
+            .bucket {
+                width: 250px;
+                height: 300px;
+            }
+
+            .bucket-text {
+                font-size: 22px;
+                padding: 0 15px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="bucket-container" onclick="toggleList()">
+        <div class="bucket">
+            <div class="bucket-text">Our Bucket List 💕</div>
+        </div>
+    </div>
 
-<header>
-<h1>Our Bucket List</h1>
-<input class="search" id="search" placeholder="Search dreams…">
-</header>
+    <div class="list-container" id="listContainer">
+        <div class="header">
+            <h1><i class="fas fa-heart"></i> Our Dreams Together <i class="fas fa-heart"></i></h1>
+            <button class="close-btn" onclick="toggleList()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="dreams-list" id="dreamsList">
+            <!-- Dreams will be populated by JS -->
+        </div>
+    </div>
 
-<div class="bucket-stage">
-<div class="bucket" id="bucket">
-<div class="bucket-label">OPEN</div>
-</div>
-</div>
+    <button id="addDreamBtn" onclick="openAddModal()">
+        <i class="fas fa-plus"></i>
+    </button>
 
-<main id="content">
-<div class="grid" id="grid"></div>
-</main>
+    <!-- Add/Edit Modal -->
+    <div class="modal" id="dreamModal">
+        <div class="modal-content">
+            <h2 id="modalTitle"><i class="fas fa-heart"></i> Add New Dream</h2>
+            <form id="dreamForm">
+                <div class="form-group">
+                    <label for="dreamText">Dream 💭</label>
+                    <textarea id="dreamText" rows="3" required placeholder="Write your dream here..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="dreamLocation">Location 📍</label>
+                    <input type="text" id="dreamLocation" placeholder="Enter location (optional)">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Dream <i class="fas fa-save"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-<div class="fab" onclick="openAdd()">+</div>
+    <!-- Particles Container -->
+    <div class="heart-particles" id="particles"></div>
 
-<!-- ADD MODAL -->
-<div class="modal add-modal" id="addModal">
-<div class="add-box">
-<textarea id="newDream" placeholder="New dream…"></textarea>
-<div class="add-actions">
-<button onclick="closeAdd()">Cancel</button>
-<button class="add" onclick="addDream()">Add</button>
-</div>
-</div>
-</div>
+    <script>
+        const dreams = [
+            "See her in a wedding gown.",
+            "Travel the world together",
+            "Move abroad and settle.",
+            "Capri (most important our dream place).",
+            "Bioluminescence.",
+            "Watch flying lantern festival together🫶🏻.",
+            "Give her that secret gift of her teenage on her 40th bday.",
+            "Buy a caravan.",
+            "Open a cafe with the love of my life.",
+            "Ladakh road trip with her.",
+            "Camping with her and watching the night sky.",
+            "Horse riding with her.",
+            "Driving speed boat with her during sunset.",
+            "Sky diving with her.",
+            "Cycling in Switzerland with her.",
+            "Gifting her dream digicam.",
+            "Watch fireworks with her. (If not available I'll arrange our own fireworks).",
+            "Buy a yatch.",
+            "Buy her fav car bmw i7 or bmw m5 in future.",
+            "Adopt atleast 1 kid.",
+            "Take her to Disneyland.",
+            "Hot air balloon with our kids.",
+            "Mauritius underwater waterfall.",
+            "New year fireworks in Sydney with her.",
+            "Visit some old age home/orphanage or do something which will make someone happy..with her on our 1st anniversary..8 dec 2026.",
+            "Escape room date with her.",
+            "New year at copacabana beach Rio..with her.",
+            "Underwater diving to see whales.",
+            "Jet skiing with her in dubai.",
+            "Sky diving with her in dubai.",
+            "Marry her at a scenic dreamy spot with open sky.",
+            "F1 with her.",
+            "make matching rings with her in osaka.",
+            "Kiss bridge, phu quoc."
+        ];
 
-<!-- MAP PLACEHOLDER MODAL -->
-<div class="modal" id="mapModal">
-<div class="modal-box">
-<div class="modal-header">
-<span>Location Placeholder</span>
-<button class="close" onclick="closeMap()">✕</button>
-</div>
-<div id="map-placeholder">📍 Map Placeholder</div>
-</div>
-</div>
+        let editedIndex = -1;
 
-<script>
-// Default Dreams
-let items = JSON.parse(localStorage.getItem("dreams")) || [
-"See her in a wedding gown.",
-"Travel the world together",
-"Move abroad and settle.",
-"Capri – our dream place",
-"Bioluminescence.",
-"Watch flying lantern festival together🫶🏻.",
-"Give her that secret gift of her teenage on her 40th bday.",
-"Buy a caravan.",
-"Open a cafe with the love of my life.",
-"Ladakh road trip with her.",
-"Camping with her and watching the night sky.",
-"Horse riding with her.",
-"Driving speed boat with her during sunset.",
-"Sky diving with her.",
-"Cycling in Switzerland with her.",
-"Gifting her dream digicam.",
-"Watch fireworks with her.(If not available I'll arrange our own fireworks).",
-"Buy a yacht.",
-"Buy her fav car BMW i7 or BMW M5 in future.",
-"Adopt at least 1 kid.",
-"Take her to Disneyland.",
-"Hot air balloon with our kids.",
-"Mauritius underwater waterfall.",
-"New year fireworks in Sydney with her.",
-"Visit old age home/orphanage on 1st anniversary 8 Dec 2026.",
-"Escape room date with her.",
-"New year at Copacabana beach Rio.",
-"Underwater diving to see whales.",
-"Jet skiing with her in Dubai.",
-"Sky diving with her in Dubai.",
-"Marry her at a scenic dreamy spot with open sky.",
-"F1 with her.",
-"Make matching rings with her in Osaka.",
-"Kiss bridge, Phu Quoc."
-];
+        // Load from localStorage
+        function loadDreams() {
+            const saved = localStorage.getItem('loveBucketList');
+            if (saved) {
+                return JSON.parse(saved);
+            }
+            return dreams.map((text, index) => ({
+                text,
+                location: ''
+            }));
+        }
 
-const grid=document.getElementById("grid");
-const search=document.getElementById("search");
+        let allDreams = loadDreams();
 
-// Render Function
-function render(){
-grid.innerHTML="";
-items.filter(i=>i.toLowerCase().includes(search.value.toLowerCase()))
-.forEach((item,i)=>{
-  const c=document.createElement("div");
-  c.className="card";
-  c.innerHTML=`
-  <textarea oninput="updateText(${i},this.value)">${item}</textarea>
-  <button onclick="openMap(${i})">📍 Set Location</button>
-  <button class="delete" onclick="deleteDream(${i})">✕</button>
-  `;
-  grid.appendChild(c);
-});
-localStorage.setItem("dreams", JSON.stringify(items));
-}
+        function saveDreams() {
+            localStorage.setItem('loveBucketList', JSON.stringify(allDreams));
+        }
 
-search.oninput=render;
+        function renderDreams() {
+            const container = document.getElementById('dreamsList');
+            container.innerHTML = '';
+            allDreams.forEach((dream, index) => {
+                const card = document.createElement('div');
+                card.className = 'dream-card';
+                card.innerHTML = `
+                    <div class="dream-text">${dream.text}</div>
+                    ${dream.location ? `<div class="dream-location"><i class="fas fa-map-marker-alt"></i> ${dream.location}</div>` : ''}
+                    <div class="dream-actions">
+                        <button class="btn btn-edit" onclick="editDream(${index})">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-delete" onclick="deleteDream(${index})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
 
-function updateText(i,v){
-items[i]=v;
-localStorage.setItem("dreams", JSON.stringify(items));
-}
+        function toggleList() {
+            const container = document.getElementById('listContainer');
+            const bucket = document.querySelector('.bucket-container');
+            container.classList.toggle('active');
+            bucket.style.display = container.classList.contains('active') ? 'none' : 'block';
+            if (container.classList.contains('active')) {
+                document.getElementById('addDreamBtn').classList.add('active');
+                createHeartParticles();
+                renderDreams();
+            } else {
+                document.getElementById('addDreamBtn').classList.remove('active');
+            }
+        }
 
-function deleteDream(i){
-if(confirm("Delete this dream?")){
-  items.splice(i,1);
-  render();
-}
+        function openAddModal() {
+            editedIndex = -1;
+            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-heart"></i> Add New Dream';
+            document.getElementById('dreamForm').reset();
+            document.getElementById('dreamModal').classList.add('active');
+        }
 
-// Add Dream
-function openAdd(){document.getElementById("addModal").style.display="flex";}
-function closeAdd(){document.getElementById("addModal").style.display="none";}
-function addDream(){
-const v=document.getElementById("newDream").value.trim();
-if(!v) return;
-items.push(v);
-document.getElementById("newDream").value="";
-render();
-closeAdd();
-}
+        function editDream(index) {
+            editedIndex = index;
+            const dream = allDreams[index];
+            document.getElementById('dreamText').value = dream.text;
+            document.getElementById('dreamLocation').value = dream.location;
+            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Dream';
+            document.getElementById('dreamModal').classList.add('active');
+        }
 
-// Bucket Papers Animation
-function burstPapers(){
-for(let i=0;i<12;i++){
-  const p=document.createElement("div");
-  p.className="paper";
-  p.innerText=items[i%items.length];
-  p.style.left="50%";
-  p.style.bottom="48%";
-  p.style.setProperty("--x",Math.random());
-  p.style.setProperty("--y",Math.random());
-  p.style.setProperty("--r",Math.random());
-  document.body.appendChild(p);
-  setTimeout(()=>p.remove(),1800);
-}
-}
+        function closeModal() {
+            document.getElementById('dreamModal').classList.remove('active');
+        }
 
-const bucket=document.getElementById("bucket");
-bucket.onclick=()=>{
-burstPapers();
-document.querySelector(".bucket-stage").remove();
-};
+        function deleteDream(index) {
+            if (confirm('Delete this dream? 💔')) {
+                allDreams.splice(index, 1);
+                saveDreams();
+                renderDreams();
+            }
+        }
 
-// Map Placeholder
-function openMap(i){document.getElementById("mapModal").style.display="flex";}
-function closeMap(){document.getElementById("mapModal").style.display="none";}
+        document.getElementById('dreamForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const text = document.getElementById('dreamText').value.trim();
+            const location = document.getElementById('dreamLocation').value.trim();
 
-// Initial Render
-render();
-</script>
+            if (editedIndex === -1) {
+                allDreams.push({ text, location });
+            } else {
+                allDreams[editedIndex] = { text, location };
+            }
+
+            saveDreams();
+            renderDreams();
+            closeModal();
+        });
+
+        // Heart Particles Animation
+        function createHeartParticles() {
+            const particlesContainer = document.getElementById('particles');
+            particlesContainer.innerHTML = '';
+            
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.innerHTML = '💕';
+                particle.style.position = 'fixed';
+                particle.style.fontSize = '20px';
+                particle.style.pointerEvents = 'none';
+                particle.style.zIndex = '501';
+                particle.style.left = '50%';
+                particle.style.top = '50%';
+                particle.style.transition = 'all 1s ease-out';
+                
+                particlesContainer.appendChild(particle);
+                
+                setTimeout(() => {
+                    const angle = (Math.PI * 2 * i) / 20;
+                    const velocity = 150 + Math.random() * 100;
+                    const vx = Math.cos(angle) * velocity;
+                    const vy = Math.sin(angle) * velocity;
+                    
+                    particle.animate([
+                        { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                        { 
+                            transform: `translate(${vx}px, ${vy}px) scale(0)`,
+                            opacity: 0 
+                        }
+                    ], {
+                        duration: 1500,
+                        easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                    });
+                }, 100);
+            }
+        }
+
+        // Close modal on outside click
+        document.getElementById('dreamModal').addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                closeModal();
+            }
+        });
+
+        // Initialize
+        renderDreams();
+    </script>
 </body>
 </html>
