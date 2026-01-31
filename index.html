@@ -1,174 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Bucket List 🤍</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Our Bucket List</title>
 
 <!-- Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@300;400&family=Patrick+Hand&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500&family=Patrick+Hand&display=swap" rel="stylesheet">
+
+<!-- Leaflet Map -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
 <style>
 :root{
-  --bg:#f7f3ef;
-  --card:#ffffff;
-  --accent:#e8b4c8;
-  --text:#2e2e2e;
+  --bg:#f5f4f2;
+  --surface:#ffffff;
+  --ink:#111;
+  --muted:#666;
+  --accent:#d8a7b1;
+  --ease:cubic-bezier(.22,1,.36,1);
 }
-*{box-sizing:border-box}
 
+*{box-sizing:border-box}
 body{
   margin:0;
-  font-family:Poppins,sans-serif;
   background:var(--bg);
-  color:var(--text);
-  overflow-x:hidden;
+  font-family:Inter,sans-serif;
+  color:var(--ink);
 }
 
 /* ---------- HEADER ---------- */
 header{
-  text-align:center;
-  padding:50px 20px 30px;
+  padding:64px 8vw 24px;
 }
 .title{
-  display:inline-block;
-  padding:16px 30px;
-  font-family:Playfair Display;
-  font-size:2.2rem;
-  border:2px dotted var(--accent);
-  background:var(--card);
-  border-radius:18px;
+  font-family:Anton;
+  font-size:clamp(2.5rem,6vw,4.5rem);
+  letter-spacing:.04em;
+}
+.subtitle{
+  max-width:520px;
+  color:var(--muted);
+  margin-top:10px;
 }
 
-/* ---------- BUCKET OPENING ---------- */
+/* ---------- BUCKET ---------- */
 .bucket-stage{
   position:fixed;
   inset:0;
   display:flex;
   justify-content:center;
   align-items:flex-end;
-  pointer-events:none;
-  z-index:10;
+  z-index:5;
 }
 .bucket{
-  width:380px;
-  height:320px;
-  background:linear-gradient(#d8a7b1,#c48aa0);
-  border-radius:0 0 60px 60px;
-  position:relative;
+  width:420px;
+  height:340px;
+  background:linear-gradient(#ddb4bd,#c58a9f);
+  border-radius:0 0 70px 70px;
   transform:translateY(100%);
-  animation:riseUp 1.6s ease-out forwards;
-  animation-delay:.4s;
-  pointer-events:auto;
+  animation:rise 1.8s var(--ease) forwards;
   cursor:pointer;
+  position:relative;
+  box-shadow:0 40px 120px rgba(0,0,0,.25);
 }
-@keyframes riseUp{to{transform:translateY(45%)}}
-
+@keyframes rise{to{transform:translateY(48%)}}
 .bucket::before{
   content:"";
   position:absolute;
-  top:-50px;
-  left:-30px;
-  right:-30px;
-  height:100px;
-  border:10px solid #c48aa0;
+  top:-56px;
+  left:-36px;
+  right:-36px;
+  height:110px;
+  border:12px solid #c58a9f;
   border-bottom:none;
-  border-radius:100px 100px 0 0;
+  border-radius:120px 120px 0 0;
 }
-.bucket span{
+.bucket-label{
   position:absolute;
+  bottom:110px;
   width:100%;
-  bottom:95px;
   text-align:center;
+  font-family:Anton;
   color:white;
-  font-family:Playfair Display;
-  font-size:1.6rem;
-  animation:pulse 2s infinite;
+  letter-spacing:.08em;
 }
-@keyframes pulse{50%{opacity:.6}}
 
-/* ---------- PAPER SLIPS ---------- */
+/* ---------- PAPER ---------- */
 .paper{
   position:fixed;
-  width:110px;
-  height:65px;
-  background:#fff;
+  width:130px;
+  height:80px;
+  background:#fffdf9;
+  padding:10px;
+  font-family:'Patrick Hand',cursive;
+  font-size:14px;
   border-radius:6px;
-  box-shadow:0 10px 25px rgba(0,0,0,.18);
-  padding:8px;
-  font-family:'Patrick Hand', cursive;
-  font-size:13px;
-  color:#444;
-  animation:fly 1.8s ease-out forwards;
-  z-index:9;
+  box-shadow:0 18px 40px rgba(0,0,0,.25);
+  animation:fly 1.8s var(--ease) forwards;
+  z-index:4;
 }
-.paper::after{
-  content:"";
-  position:absolute;
-  inset:6px;
-  border:1px dashed rgba(0,0,0,.15);
-  border-radius:4px;
-  pointer-events:none;
-}
-
 @keyframes fly{
-  from{
-    transform:translateY(0) rotate(0deg);
-    opacity:1;
-  }
   to{
     transform:
-      translate(
-        calc(-220px + 440px * var(--x)),
-        calc(-420px - 220px * var(--y))
-      )
-      rotate(calc(-45deg + 90deg * var(--r)));
+      translate(calc(-260px + 520px * var(--x)),
+                calc(-520px - 260px * var(--y)))
+      rotate(calc(-60deg + 120deg * var(--r)));
     opacity:0;
   }
 }
 
-/* ---------- LIST ---------- */
-#list{
+/* ---------- CONTENT ---------- */
+main{
   display:none;
-  padding:30px 6% 80px;
+  padding:40px 8vw 120px;
 }
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:22px;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:28px;
 }
 
-/* ---------- FLOATING CARDS ---------- */
+/* ---------- CARD ---------- */
 .card{
-  background:linear-gradient(180deg,var(--card),#fffafc);
-  border-radius:22px;
-  padding:18px;
-  box-shadow:0 25px 50px rgba(0,0,0,.1);
-  animation:pop .6s ease, float 6s ease-in-out infinite;
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(10px);
+  border-radius:26px;
+  padding:22px;
+  box-shadow:0 30px 80px rgba(0,0,0,.12);
+  animation:cardIn .8s var(--ease) both;
 }
-@keyframes pop{
-  from{transform:scale(.6) translateY(40px);opacity:0}
-  to{transform:scale(1);opacity:1}
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(50px)}
 }
-@keyframes float{50%{transform:translateY(-14px)}}
-
 .card textarea{
   width:100%;
   border:none;
-  outline:none;
   resize:none;
   background:transparent;
-  font-family:Poppins;
+  font-family:Inter;
+  font-size:1rem;
+}
+.card-actions{
+  display:flex;
+  gap:12px;
+  margin-top:12px;
+}
+.card-actions button{
+  border:none;
+  background:var(--ink);
+  color:white;
+  padding:8px 14px;
+  border-radius:20px;
+  font-size:.75rem;
+  cursor:pointer;
 }
 
-/* ---------- ADD ---------- */
-.add-btn{
-  margin:40px auto 0;
-  display:block;
-  padding:14px 28px;
-  border:none;
-  border-radius:30px;
+/* ---------- MAP MODAL ---------- */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.4);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:20;
+}
+.modal-box{
+  width:min(90vw,600px);
+  background:white;
+  border-radius:20px;
+  padding:16px;
+}
+#map{
+  height:360px;
+  border-radius:14px;
+}
+.close{
+  margin-top:12px;
   background:var(--accent);
+  border:none;
+  padding:10px 20px;
+  border-radius:20px;
   color:white;
   cursor:pointer;
 }
@@ -178,66 +191,97 @@ header{
 <body>
 
 <header>
-  <div class="title">Our Bucket List 🤍</div>
+  <div class="title">Our Bucket List</div>
+  <div class="subtitle">Dreams mapped across the world.</div>
 </header>
 
-<!-- BUCKET -->
 <div class="bucket-stage">
   <div class="bucket" id="bucket">
-    <span>Tap Me 🪣</span>
+    <div class="bucket-label">OPEN</div>
   </div>
 </div>
 
-<section id="list">
+<main id="content">
   <div class="grid" id="grid"></div>
-  <button class="add-btn" onclick="addItem()">+ Add New Dream</button>
-</section>
+</main>
+
+<!-- MAP MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div id="map"></div>
+    <button class="close" onclick="closeMap()">Done</button>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-const paperTexts=[
-  "Capri 🇮🇹",
-  "Wedding day 🤍",
-  "Ladakh road trip",
-  "Cafe together ☕",
-  "Sky diving ✨",
-  "Old age home visit",
-  "Our forever ♾️",
-  "Under open sky",
-  "World travel 🌍",
-  "Just us 💗"
-];
+const papers=["Capri","Wedding","Forever","Ladakh","Cafe","World","Us"];
 
-const listItems=[
-  "See her in a wedding gown.",
-  "Travel the world together.",
-  "Capri – our dream place.",
-  "Marry her under open sky.",
-  "Open a cafe together.",
-  "Ladakh road trip.",
-  "Sky diving together."
+let items=JSON.parse(localStorage.getItem("dreams"))||[
+  {text:"Capri – our dream place.",lat:null,lng:null},
+  {text:"Marry her under open sky.",lat:null,lng:null},
+  {text:"Ladakh road trip.",lat:null,lng:null}
 ];
 
 const grid=document.getElementById("grid");
+let map,marker,activeIndex;
 
-/* render final cards */
 function render(){
   grid.innerHTML="";
-  listItems.forEach(t=>{
+  items.forEach((item,i)=>{
     const c=document.createElement("div");
     c.className="card";
-    c.innerHTML=`<textarea>${t}</textarea>`;
+    c.innerHTML=`
+      <textarea oninput="edit(${i},this.value)">${item.text}</textarea>
+      <div class="card-actions">
+        <button onclick="openMap(${i})">📍 Set Location</button>
+        ${item.lat?`<button onclick="openMap(${i})">🌍 View</button>`:""}
+      </div>
+    `;
     grid.appendChild(c);
   });
+  localStorage.setItem("dreams",JSON.stringify(items));
 }
 
-/* handwritten paper burst */
-function paperBurst(){
-  for(let i=0;i<16;i++){
+function edit(i,v){items[i].text=v;render()}
+
+/* MAP */
+function openMap(i){
+  activeIndex=i;
+  document.getElementById("modal").style.display="flex";
+
+  setTimeout(()=>{
+    if(!map){
+      map=L.map("map").setView([20,0],2);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
+      map.on("click",e=>{
+        if(marker) marker.remove();
+        marker=L.marker(e.latlng).addTo(map);
+        items[activeIndex].lat=e.latlng.lat;
+        items[activeIndex].lng=e.latlng.lng;
+        localStorage.setItem("dreams",JSON.stringify(items));
+      });
+    }
+    if(items[i].lat){
+      map.setView([items[i].lat,items[i].lng],6);
+      marker=L.marker([items[i].lat,items[i].lng]).addTo(map);
+    }
+  },200);
+}
+
+function closeMap(){
+  document.getElementById("modal").style.display="none";
+}
+
+/* PAPER + OPEN */
+function burst(){
+  for(let i=0;i<12;i++){
     const p=document.createElement("div");
     p.className="paper";
-    p.innerText=paperTexts[Math.floor(Math.random()*paperTexts.length)];
+    p.innerText=papers[Math.floor(Math.random()*papers.length)];
     p.style.left="50%";
-    p.style.bottom="35%";
+    p.style.bottom="38%";
     p.style.setProperty("--x",Math.random());
     p.style.setProperty("--y",Math.random());
     p.style.setProperty("--r",Math.random());
@@ -247,12 +291,10 @@ function paperBurst(){
 }
 
 document.getElementById("bucket").onclick=()=>{
-  paperBurst();
-  document.querySelector(".bucket-stage").style.display="none";
-  setTimeout(()=>{
-    document.getElementById("list").style.display="block";
-    render();
-  },700);
+  burst();
+  document.querySelector(".bucket-stage").remove();
+  document.getElementById("content").style.display="block";
+  render();
 };
 </script>
 
