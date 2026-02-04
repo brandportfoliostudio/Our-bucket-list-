@@ -8,65 +8,44 @@
 <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
 
 <style>
-body{
-  margin:0;
-  background:#f4f6fb;
-  font-family:Antonio,sans-serif;
-}
-header{
-  padding:20px;
-  text-align:center;
-}
+body{margin:0;background:#f4f6fb;font-family:Antonio,sans-serif}
+header{text-align:center;padding:20px}
 header h1{
   font-family:'Patrick Hand';
   border:2px dashed #555;
   display:inline-block;
   padding:10px 18px;
-  background:#fff;
+  background:#fff
 }
 #search{
   width:90%;
   max-width:500px;
   padding:12px;
   border-radius:12px;
-  border:1px solid #ccc;
+  border:1px solid #ccc
 }
 .grid{
   padding:20px;
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:16px;
+  gap:16px
 }
 .card{
   background:#fff;
   border-radius:18px;
   padding:14px;
-  box-shadow:0 8px 20px rgba(0,0,0,.08);
+  box-shadow:0 8px 20px rgba(0,0,0,.08)
 }
-.card h3{
-  font-family:'Patrick Hand';
-  margin:0 0 6px;
-}
-.images{
-  display:flex;
-  gap:6px;
-  overflow-x:auto;
-}
-.images img{
-  height:70px;
-  border-radius:10px;
-}
+.card h3{font-family:'Patrick Hand';margin:0}
+.images{display:flex;gap:6px;overflow-x:auto}
+.images img{height:70px;border-radius:10px}
+.actions{margin-top:10px}
 button{
   border:none;
   padding:10px;
   border-radius:10px;
   background:#111;
-  color:#fff;
-}
-.actions{
-  display:flex;
-  gap:8px;
-  margin-top:10px;
+  color:#fff
 }
 #addBtn{
   position:fixed;
@@ -75,7 +54,7 @@ button{
   width:60px;
   height:60px;
   border-radius:50%;
-  font-size:28px;
+  font-size:28px
 }
 #modal{
   position:fixed;
@@ -83,21 +62,21 @@ button{
   background:rgba(0,0,0,.5);
   display:none;
   align-items:center;
-  justify-content:center;
+  justify-content:center
 }
 .modal-box{
   background:#fff;
   width:90%;
   max-width:420px;
   border-radius:18px;
-  padding:18px;
+  padding:18px
 }
 input,textarea{
   width:100%;
   padding:10px;
   margin-bottom:10px;
   border-radius:10px;
-  border:1px solid #ccc;
+  border:1px solid #ccc
 }
 </style>
 </head>
@@ -125,54 +104,71 @@ input,textarea{
 </div>
 
 <script>
-const grid=document.getElementById("grid");
-const modal=document.getElementById("modal");
-const addBtn=document.getElementById("addBtn");
-const search=document.getElementById("search");
+const grid = document.getElementById("grid");
+const modal = document.getElementById("modal");
+const addBtn = document.getElementById("addBtn");
+const search = document.getElementById("search");
 
-let dreams=JSON.parse(localStorage.getItem("dreams"))||[
- {title:"See her in a wedding gown",location:"",note:"",imgs:[]},
- {title:"Capri – our dream place",location:"Italy",note:"",imgs:[]},
- {title:"Marry her under open sky",location:"",note:"",imgs:[]}
-];
+function loadDreams(){
+  try{
+    return JSON.parse(localStorage.getItem("dreams")) || [];
+  }catch(e){
+    return [];
+  }
+}
 
-function render(list=dreams){
-  grid.innerHTML="";
+let dreams = loadDreams();
+
+if(dreams.length === 0){
+  dreams = [
+    {title:"See her in a wedding gown",location:"",note:"",imgs:[]},
+    {title:"Capri – our dream place",location:"Italy",note:"",imgs:[]},
+    {title:"Marry her under open sky",location:"",note:"",imgs:[]}
+  ];
+  localStorage.setItem("dreams", JSON.stringify(dreams));
+}
+
+function saveStorage(){
+  localStorage.setItem("dreams", JSON.stringify(dreams));
+}
+
+function render(list = dreams){
+  grid.innerHTML = "";
   list.forEach((d,i)=>{
-    const div=document.createElement("div");
-    div.className="card";
-    div.innerHTML=`
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `
       <h3>${d.title}</h3>
-      <small>📍 ${d.location||"—"}</small>
-      <p>${d.note||""}</p>
+      <small>📍 ${d.location || "—"}</small>
+      <p>${d.note || ""}</p>
       <div class="images">${d.imgs.map(x=>`<img src="${x}">`).join("")}</div>
       <div class="actions">
         <button onclick="removeDream(${i})">Delete</button>
       </div>`;
     grid.appendChild(div);
   });
-  localStorage.setItem("dreams",JSON.stringify(dreams));
 }
 
 function removeDream(i){
   dreams.splice(i,1);
+  saveStorage();
   render();
 }
 
-addBtn.onclick=()=>modal.style.display="flex";
-modal.onclick=e=>{if(e.target===modal)modal.style.display="none"}
+addBtn.onclick = ()=> modal.style.display="flex";
+modal.onclick = e => { if(e.target===modal) modal.style.display="none"; };
 
 function saveDream(){
-  const imgs=[];
-  const files=document.getElementById("images").files;
+  const files = images.files;
+  const imgs = [];
   if(files.length){
-    let loaded=0;
+    let loaded = 0;
     for(const f of files){
-      const r=new FileReader();
-      r.onload=e=>{
+      const r = new FileReader();
+      r.onload = e=>{
         imgs.push(e.target.result);
         loaded++;
-        if(loaded===files.length)finishSave(imgs);
+        if(loaded === files.length) finishSave(imgs);
       };
       r.readAsDataURL(f);
     }
@@ -186,14 +182,17 @@ function finishSave(imgs){
     note:note.value,
     imgs
   });
-  title.value=location.value=note.value="";
-  images.value="";
+  title.value = location.value = note.value = "";
+  images.value = "";
   modal.style.display="none";
+  saveStorage();
   render();
 }
 
-search.oninput=()=>{
-  render(dreams.filter(d=>d.title.toLowerCase().includes(search.value.toLowerCase())));
+search.oninput = ()=>{
+  const q = search.value.toLowerCase();
+  if(!q) render();
+  else render(dreams.filter(d=>d.title.toLowerCase().includes(q)));
 };
 
 render();
