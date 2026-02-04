@@ -1,164 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>Our Bucket List</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Our Bucket List 🤍</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Antonio:wght@300;500;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --bg:#f6f7fb;
-  --card:#ffffff;
-  --accent:#111;
-  --soft:#eaeaea;
-}
-
-*{box-sizing:border-box}
 body{
   margin:0;
-  background:var(--bg);
-  font-family:Antonio, sans-serif;
-  overflow-x:hidden;
+  background:#f4f6fb;
+  font-family:Antonio,sans-serif;
 }
-
-/* BUCKET */
-#bucket-wrap{
-  position:fixed;
-  top:-120px;
-  width:100%;
-  height:320px;
-  pointer-events:none;
-}
-#bucket{
-  margin:auto;
-  width:260px;
-  height:260px;
-  background:#ddd;
-  border-radius:0 0 40px 40px;
-  position:relative;
-  animation:float 4s ease-in-out infinite;
-}
-#bucket h1{
-  position:absolute;
-  bottom:30px;
-  width:100%;
+header{
+  padding:20px;
   text-align:center;
+}
+header h1{
   font-family:'Patrick Hand';
   border:2px dashed #555;
-  margin:0 20px;
-  padding:8px;
+  display:inline-block;
+  padding:10px 18px;
+  background:#fff;
 }
-@keyframes float{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(10px)}
-}
-
-/* CONTENT */
-main{
-  padding:220px 16px 120px;
-  max-width:900px;
-  margin:auto;
-}
-h2{
-  text-align:center;
-  margin-bottom:20px;
-}
-
-/* SEARCH */
 #search{
-  width:100%;
+  width:90%;
+  max-width:500px;
   padding:12px;
-  font-size:16px;
   border-radius:12px;
-  border:1px solid var(--soft);
-  margin-bottom:20px;
+  border:1px solid #ccc;
 }
-
-/* GRID */
 .grid{
+  padding:20px;
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
   gap:16px;
 }
-
-/* CARD */
 .card{
-  background:var(--card);
-  border-radius:20px;
-  padding:16px;
-  box-shadow:0 10px 25px rgba(0,0,0,.08);
-  animation:pop .4s ease;
-}
-@keyframes pop{
-  from{transform:scale(.9);opacity:0}
-  to{transform:scale(1);opacity:1}
+  background:#fff;
+  border-radius:18px;
+  padding:14px;
+  box-shadow:0 8px 20px rgba(0,0,0,.08);
 }
 .card h3{
   font-family:'Patrick Hand';
-  margin:0 0 8px;
+  margin:0 0 6px;
 }
-.card small{color:#777}
-
-/* IMAGES */
 .images{
   display:flex;
   gap:6px;
   overflow-x:auto;
-  margin:8px 0;
 }
 .images img{
   height:70px;
   border-radius:10px;
 }
-
-/* BUTTONS */
+button{
+  border:none;
+  padding:10px;
+  border-radius:10px;
+  background:#111;
+  color:#fff;
+}
 .actions{
   display:flex;
   gap:8px;
   margin-top:10px;
 }
-button{
-  flex:1;
-  border:none;
-  padding:10px;
-  border-radius:10px;
-  cursor:pointer;
-  background:#111;
-  color:#fff;
-}
-
-/* ADD BUTTON */
-#add{
+#addBtn{
   position:fixed;
   bottom:20px;
   right:20px;
   width:60px;
   height:60px;
   border-radius:50%;
-  font-size:30px;
-  background:#111;
-  color:#fff;
-  border:none;
+  font-size:28px;
 }
-
-/* MODAL */
 #modal{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.4);
+  background:rgba(0,0,0,.5);
   display:none;
   align-items:center;
   justify-content:center;
 }
-#modal .box{
+.modal-box{
   background:#fff;
   width:90%;
   max-width:420px;
-  border-radius:20px;
-  padding:20px;
+  border-radius:18px;
+  padding:18px;
 }
 input,textarea{
   width:100%;
@@ -172,101 +104,97 @@ input,textarea{
 
 <body>
 
-<div id="bucket-wrap">
-  <div id="bucket">
-    <h1>Our Bucket List 🤍</h1>
-  </div>
-</div>
+<header>
+  <h1>Our Bucket List 🤍</h1><br><br>
+  <input id="search" placeholder="Search dreams...">
+</header>
 
-<main>
-  <h2>Dreams we’ll complete together</h2>
-  <input id="search" placeholder="Search dreams..." />
-  <div class="grid" id="grid"></div>
-</main>
+<div class="grid" id="grid"></div>
 
-<button id="add">+</button>
+<button id="addBtn">+</button>
 
-<!-- MODAL -->
 <div id="modal">
-  <div class="box">
+  <div class="modal-box">
     <h3>Add Dream</h3>
     <input id="title" placeholder="Dream title">
-    <input id="location" placeholder="Location (text)">
+    <input id="location" placeholder="Location">
     <textarea id="note" placeholder="Notes"></textarea>
-    <input id="images" type="file" multiple accept="image/*">
+    <input type="file" id="images" multiple accept="image/*">
     <button onclick="saveDream()">Save</button>
   </div>
 </div>
 
 <script>
-const grid=document.getElementById('grid');
-const modal=document.getElementById('modal');
-const add=document.getElementById('add');
-const search=document.getElementById('search');
+const grid=document.getElementById("grid");
+const modal=document.getElementById("modal");
+const addBtn=document.getElementById("addBtn");
+const search=document.getElementById("search");
 
-let dreams=JSON.parse(localStorage.getItem('dreams'))||[
-{title:"See her in a wedding gown",location:"",note:"",imgs:[]},
-{title:"Capri – our dream place",location:"Italy",note:"",imgs:[]},
-{title:"Marry her under open sky",location:"",note:"",imgs:[]}
+let dreams=JSON.parse(localStorage.getItem("dreams"))||[
+ {title:"See her in a wedding gown",location:"",note:"",imgs:[]},
+ {title:"Capri – our dream place",location:"Italy",note:"",imgs:[]},
+ {title:"Marry her under open sky",location:"",note:"",imgs:[]}
 ];
 
 function render(list=dreams){
-  grid.innerHTML='';
+  grid.innerHTML="";
   list.forEach((d,i)=>{
-    const c=document.createElement('div');
-    c.className='card';
-    c.innerHTML=`
+    const div=document.createElement("div");
+    div.className="card";
+    div.innerHTML=`
       <h3>${d.title}</h3>
-      <small>📍 ${d.location||'Not set'}</small>
-      <p>${d.note||''}</p>
-      <div class="images">${d.imgs.map(x=>`<img src="${x}">`).join('')}</div>
+      <small>📍 ${d.location||"—"}</small>
+      <p>${d.note||""}</p>
+      <div class="images">${d.imgs.map(x=>`<img src="${x}">`).join("")}</div>
       <div class="actions">
-        <button onclick="del(${i})">Delete</button>
+        <button onclick="removeDream(${i})">Delete</button>
       </div>`;
-    grid.appendChild(c);
+    grid.appendChild(div);
   });
-  localStorage.setItem('dreams',JSON.stringify(dreams));
+  localStorage.setItem("dreams",JSON.stringify(dreams));
 }
 
-function del(i){
+function removeDream(i){
   dreams.splice(i,1);
   render();
 }
 
-add.onclick=()=>modal.style.display='flex';
-modal.onclick=e=>e.target==modal&&(modal.style.display='none');
+addBtn.onclick=()=>modal.style.display="flex";
+modal.onclick=e=>{if(e.target===modal)modal.style.display="none"}
 
 function saveDream(){
   const imgs=[];
-  const files=document.getElementById('images').files;
-  for(let f of files){
-    const r=new FileReader();
-    r.onload=e=>{
-      imgs.push(e.target.result);
-      if(imgs.length===files.length){
-        dreams.push({
-          title:title.value,
-          location:location.value,
-          note:note.value,
-          imgs
-        });
-        render();
-        modal.style.display='none';
-        title.value=location.value=note.value='';
-      }
-    };
-    r.readAsDataURL(f);
-  }
-  if(!files.length){
-    dreams.push({title:title.value,location:location.value,note:note.value,imgs:[]});
-    render();
-    modal.style.display='none';
-  }
+  const files=document.getElementById("images").files;
+  if(files.length){
+    let loaded=0;
+    for(const f of files){
+      const r=new FileReader();
+      r.onload=e=>{
+        imgs.push(e.target.result);
+        loaded++;
+        if(loaded===files.length)finishSave(imgs);
+      };
+      r.readAsDataURL(f);
+    }
+  } else finishSave([]);
 }
 
-search.oninput=()=>render(
-  dreams.filter(d=>d.title.toLowerCase().includes(search.value.toLowerCase()))
-);
+function finishSave(imgs){
+  dreams.push({
+    title:title.value,
+    location:location.value,
+    note:note.value,
+    imgs
+  });
+  title.value=location.value=note.value="";
+  images.value="";
+  modal.style.display="none";
+  render();
+}
+
+search.oninput=()=>{
+  render(dreams.filter(d=>d.title.toLowerCase().includes(search.value.toLowerCase())));
+};
 
 render();
 </script>
